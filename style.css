@@ -1,0 +1,79 @@
+/* Small custom rules that are awkward to express with Tailwind utility classes alone. */
+
+.field-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  color: rgb(100 116 139); /* slate-500 */
+}
+.dark .field-label {
+  color: rgb(148 163 184); /* slate-400 */
+}
+
+.field-input {
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid rgb(203 213 225); /* slate-300 */
+  background-color: white;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+.field-input:focus {
+  border-color: rgb(56 189 248); /* sky-400 */
+  box-shadow: 0 0 0 3px rgb(56 189 248 / 0.15);
+}
+.dark .field-input {
+  background-color: rgb(30 41 59); /* slate-800 */
+  border-color: rgb(71 85 105); /* slate-600 */
+  color: rgb(241 245 249);
+}
+
+.tab-btn {
+  color: rgb(100 116 139);
+}
+.tab-btn.tab-active {
+  background-color: rgb(15 23 42); /* slate-900 */
+  color: white;
+}
+.dark .tab-btn {
+  color: rgb(148 163 184);
+}
+.dark .tab-btn.tab-active {
+  background-color: rgb(14 165 233); /* sky-500 */
+  color: white;
+}
+
+#dropzone.drag-over {
+  border-color: rgb(56 189 248);
+  background-color: rgb(240 249 255);
+}
+.dark #dropzone.drag-over {
+  background-color: rgb(30 58 84);
+}
+
+.status-pill {
+  display: inline-block;
+  padding: 0.125rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.status-pass {
+  background-color: rgb(220 252 231);
+  color: rgb(22 101 52);
+}
+.status-fail {
+  background-color: rgb(254 226 226);
+  color: rgb(153 27 27);
+}
+.dark .status-pass {
+  background-color: rgb(22 101 52 / 0.35);
+  color: rgb(134 239 172);
+}
+.dark .status-fail {
+  background-color: rgb(153 27 27 / 0.35);
+  color: rgb(252 165 165);
+}

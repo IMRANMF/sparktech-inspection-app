@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sparktech — Inspection Report Generator</title>
+<link rel="icon" type="image/svg+xml" href="logo.svg" />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { darkMode: 'class' };
+</script>
+
+<!-- SheetJS: parses .xlsx uploads -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
+<!-- jsPDF: builds the print-ready PDF -->
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js" defer></script>
+
+<link rel="stylesheet" href="style.css" />
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 transition-colors">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-20 border-b border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 backdrop-blur">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="h-9 w-9 rounded-lg bg-white p-1 ring-1 ring-slate-200">
+          <img src="logo.svg" alt="Sparktech logo" class="h-full w-full" />
+        </div>
+        <div>
+          <h1 class="text-lg font-semibold leading-tight">Sparktech</h1>
+          <p class="text-xs text-slate-500 dark:text-slate-400 leading-tight">Inspection Report Generator</p>
+        </div>
+      </div>
+      <button id="theme-toggle" type="button"
+        class="h-9 w-9 rounded-full border border-slate-300 dark:border-slate-600 flex items-center justify-center hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+        aria-label="Toggle dark mode">
+        <span id="theme-icon-light" class="hidden">☀️</span>
+        <span id="theme-icon-dark">🌙</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Tabs -->
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 mt-4">
+    <nav class="inline-flex rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-1">
+      <button data-tab="new-report" class="tab-btn tab-active px-4 py-1.5 text-sm font-medium rounded-md transition">New Report</button>
+      <button data-tab="history" class="tab-btn px-4 py-1.5 text-sm font-medium rounded-md transition">History</button>
+    </nav>
+  </div>
+
+  <main class="mx-auto max-w-6xl px-4 sm:px-6 py-6">
+
+    <!-- NEW REPORT VIEW -->
+    <section id="view-new-report" class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+
+      <!-- Left: input methods -->
+      <div class="lg:col-span-2 space-y-6">
+
+        <!-- Manual form -->
+        <div class="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5">
+          <h2 class="font-semibold mb-4">Manual Entry</h2>
+          <form id="manual-form" class="space-y-3">
+            <div>
+              <label class="field-label">Site Name</label>
+              <input required name="siteName" type="text" placeholder="e.g. North Ridge Pump Station"
+                class="field-input" />
+            </div>
+            <div>
+              <label class="field-label">Inspected By</label>
+              <input required name="inspectedBy" type="text" placeholder="e.g. J. Alvarez"
+                class="field-input" />
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="field-label">Pipe Diameter (mm)</label>
+                <input required name="diameter" type="number" min="0" step="1" placeholder="300"
+                  class="field-input" />
+              </div>
+              <div>
+                <label class="field-label">Inspection Date</label>
+                <input required name="date" type="date" class="field-input" />
+              </div>
+            </div>
+            <div>
+              <label class="field-label">Status</label>
+              <select required name="status" class="field-input">
+                <option value="Pass">Pass</option>
+                <option value="Fail">Fail</option>
+              </select>
+            </div>
+            <button type="submit"
+              class="w-full rounded-lg bg-slate-900 dark:bg-sky-500 text-white text-sm font-medium py-2 hover:opacity-90 transition">
+              Add to Preview
+            </button>
+          </form>
+        </div>
+
+        <!-- Excel upload -->
+        <div class="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5">
+          <h2 class="font-semibold mb-4">Excel Upload</h2>
+          <label id="dropzone"
+            class="flex flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed border-slate-300 dark:border-slate-600 py-8 px-4 text-center cursor-pointer hover:border-sky-400 dark:hover:border-sky-500 transition">
+            <span class="text-2xl">📄</span>
+            <span class="text-sm font-medium">Drop .xlsx file here or click to browse</span>
+            <span class="text-xs text-slate-500 dark:text-slate-400">Columns: Site Name, Inspected By, Pipe Diameter (mm), Inspection Date, Status</span>
+            <input id="file-input" type="file" accept=".xlsx,.xls" class="hidden" />
+          </label>
+          <p id="upload-status" class="text-xs mt-2 hidden"></p>
+        </div>
+      </div>
+
+      <!-- Right: preview + generate -->
+      <div class="lg:col-span-3">
+        <div class="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 h-full flex flex-col">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="font-semibold">Preview (<span id="preview-count">0</span> records)</h2>
+            <button id="generate-btn" disabled
+              class="rounded-lg bg-emerald-600 disabled:bg-slate-300 dark:disabled:bg-slate-700 disabled:cursor-not-allowed text-white text-sm font-medium px-4 py-2 hover:opacity-90 transition">
+              Generate Report
+            </button>
+          </div>
+
+          <div class="overflow-x-auto flex-1">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="text-left text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700">
+                  <th class="py-2 pr-3">Site Name</th>
+                  <th class="py-2 pr-3">Inspected By</th>
+                  <th class="py-2 pr-3">Diameter (mm)</th>
+                  <th class="py-2 pr-3">Date</th>
+                  <th class="py-2 pr-3">Status</th>
+                  <th class="py-2 pr-3"></th>
+                </tr>
+              </thead>
+              <tbody id="preview-body"></tbody>
+            </table>
+            <p id="preview-empty" class="text-sm text-slate-500 dark:text-slate-400 py-8 text-center">
+              No records yet — add one manually or upload an Excel sheet.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HISTORY VIEW -->
+    <section id="view-history" class="hidden">
+      <div class="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5">
+        <h2 class="font-semibold mb-4">Report History</h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="text-left text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700">
+                <th class="py-2 pr-3">Generated</th>
+                <th class="py-2 pr-3">Site Name</th>
+                <th class="py-2 pr-3">Inspected By</th>
+                <th class="py-2 pr-3">Records</th>
+                <th class="py-2 pr-3"></th>
+              </tr>
+            </thead>
+            <tbody id="history-body"></tbody>
+          </table>
+          <p id="history-empty" class="text-sm text-slate-500 dark:text-slate-400 py-8 text-center">
+            No reports generated yet.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="fixed bottom-5 right-5 hidden max-w-xs rounded-lg bg-slate-900 text-white text-sm px-4 py-3 shadow-lg"></div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
