@@ -1,0 +1,1 @@
+# sparktech-inspection-app
