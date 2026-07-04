@@ -427,30 +427,20 @@ function buildInspectionPdf(records, reportId, logoDataUrl) {
 }
 
 /* -------------------------------------------------------------------------
- * Logo — rasterized once from logo.svg and reused in every generated PDF
+ * Logo — fetched once from ../logo.png and reused in every generated PDF
  * ---------------------------------------------------------------------- */
 let cachedLogoDataUrl = null;
 async function getLogoDataUrl() {
   if (cachedLogoDataUrl) return cachedLogoDataUrl;
 
-  const response = await fetch('logo.svg');
-  const svgText = await response.text();
-  const img = new Image();
-  const svgUrl = URL.createObjectURL(new Blob([svgText], { type: 'image/svg+xml' }));
-
-  await new Promise((resolve, reject) => {
-    img.onload = resolve;
-    img.onerror = reject;
-    img.src = svgUrl;
+  const response = await fetch('../logo.png');
+  const blob = await response.blob();
+  cachedLogoDataUrl = await new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
   });
-
-  const canvas = document.createElement('canvas');
-  canvas.width = 160;
-  canvas.height = 160;
-  canvas.getContext('2d').drawImage(img, 0, 0, 160, 160);
-  URL.revokeObjectURL(svgUrl);
-
-  cachedLogoDataUrl = canvas.toDataURL('image/png');
   return cachedLogoDataUrl;
 }
 

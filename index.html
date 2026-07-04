@@ -3,173 +3,235 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Sparktech — Inspection Report Generator</title>
-<link rel="icon" type="image/svg+xml" href="logo.png" />
+<title>Sparktech Industrial Services | EDM, CNC, VMC, Welding &amp; Material Testing</title>
+<meta name="description" content="Sparktech Industrial Services — precision EDM machining, CNC, VMC, welding testing, material testing, and quality assurance." />
+<link rel="icon" type="image/png" href="logo.png" />
 
 <script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = { darkMode: 'class' };
-</script>
 
-<!-- SheetJS: parses .xlsx uploads -->
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
-<!-- jsPDF: builds the print-ready PDF -->
-<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js" defer></script>
-
-<link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="home.css" />
 </head>
-<body class="min-h-screen bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 transition-colors">
+<body class="bg-white text-slate-800">
 
   <!-- Header -->
-  <header class="sticky top-0 z-20 border-b border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 backdrop-blur">
+  <header class="sticky top-0 z-30 bg-white/90 backdrop-blur border-b border-slate-200">
     <div class="mx-auto max-w-6xl px-4 sm:px-6 py-3 flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <div class="h-9 w-9 rounded-lg bg-white p-1 ring-1 ring-slate-200">
-          <img src="logo.png" alt="Sparktech logo" class="h-full w-full" />
+      <a href="#top" class="flex items-center gap-3">
+        <img src="logo.png" alt="Sparktech logo" class="h-11 w-11" />
+        <div class="leading-tight">
+          <div class="font-extrabold tracking-tight text-lg">
+            <span class="text-orange-500">SPARK</span><span class="text-slate-900">TECH</span>
+          </div>
+          <div class="text-[10px] tracking-[0.2em] text-slate-500 font-medium">INDUSTRIAL SERVICES</div>
         </div>
-        <div>
-          <h1 class="text-lg font-semibold leading-tight">Sparktech</h1>
-          <p class="text-xs text-slate-500 dark:text-slate-400 leading-tight">Inspection Report Generator</p>
-        </div>
-      </div>
-      <button id="theme-toggle" type="button"
-        class="h-9 w-9 rounded-full border border-slate-300 dark:border-slate-600 flex items-center justify-center hover:bg-slate-100 dark:hover:bg-slate-800 transition"
-        aria-label="Toggle dark mode">
-        <span id="theme-icon-light" class="hidden">☀️</span>
-        <span id="theme-icon-dark">🌙</span>
-      </button>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
+        <a href="#services" class="hover:text-slate-900 transition">Services</a>
+        <a href="#about" class="hover:text-slate-900 transition">About</a>
+        <a href="#contact" class="hover:text-slate-900 transition">Contact</a>
+      </nav>
+
+      <a href="generate-report/"
+        class="rounded-lg bg-slate-900 text-white text-sm font-medium px-4 py-2 hover:bg-slate-800 transition">
+        Inspection Report Tool
+      </a>
     </div>
   </header>
 
-  <!-- Tabs -->
-  <div class="mx-auto max-w-6xl px-4 sm:px-6 mt-4">
-    <nav class="inline-flex rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-1">
-      <button data-tab="new-report" class="tab-btn tab-active px-4 py-1.5 text-sm font-medium rounded-md transition">New Report</button>
-      <button data-tab="history" class="tab-btn px-4 py-1.5 text-sm font-medium rounded-md transition">History</button>
-    </nav>
-  </div>
+  <main id="top">
 
-  <main class="mx-auto max-w-6xl px-4 sm:px-6 py-6">
-
-    <!-- NEW REPORT VIEW -->
-    <section id="view-new-report" class="grid grid-cols-1 lg:grid-cols-5 gap-6">
-
-      <!-- Left: input methods -->
-      <div class="lg:col-span-2 space-y-6">
-
-        <!-- Manual form -->
-        <div class="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5">
-          <h2 class="font-semibold mb-4">Manual Entry</h2>
-          <form id="manual-form" class="space-y-3">
-            <div>
-              <label class="field-label">Site Name</label>
-              <input required name="siteName" type="text" placeholder="e.g. North Ridge Pump Station"
-                class="field-input" />
-            </div>
-            <div>
-              <label class="field-label">Inspected By</label>
-              <input required name="inspectedBy" type="text" placeholder="e.g. J. Alvarez"
-                class="field-input" />
-            </div>
-            <div class="grid grid-cols-2 gap-3">
-              <div>
-                <label class="field-label">Pipe Diameter (mm)</label>
-                <input required name="diameter" type="number" min="0" step="1" placeholder="300"
-                  class="field-input" />
-              </div>
-              <div>
-                <label class="field-label">Inspection Date</label>
-                <input required name="date" type="date" class="field-input" />
-              </div>
-            </div>
-            <div>
-              <label class="field-label">Status</label>
-              <select required name="status" class="field-input">
-                <option value="Pass">Pass</option>
-                <option value="Fail">Fail</option>
-              </select>
-            </div>
-            <button type="submit"
-              class="w-full rounded-lg bg-slate-900 dark:bg-sky-500 text-white text-sm font-medium py-2 hover:opacity-90 transition">
-              Add to Preview
-            </button>
-          </form>
+    <!-- Hero -->
+    <section class="relative overflow-hidden">
+      <div class="absolute inset-0 hero-gradient"></div>
+      <div class="relative mx-auto max-w-6xl px-4 sm:px-6 py-20 sm:py-28 text-center">
+        <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900 max-w-3xl mx-auto">
+          Precision Engineering &amp; Industrial Testing Services
+        </h1>
+        <p class="mt-5 text-lg text-slate-600 max-w-2xl mx-auto">
+          Sparktech delivers precision machining and rigorous quality testing for industrial and infrastructure
+          projects — from EDM and CNC work to welding and material verification.
+        </p>
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+          <a href="#contact" class="rounded-lg bg-orange-500 text-white text-sm font-semibold px-6 py-3 hover:bg-orange-600 transition">
+            Get a Quote
+          </a>
+          <a href="generate-report/" class="rounded-lg border border-slate-300 bg-white text-slate-800 text-sm font-semibold px-6 py-3 hover:bg-slate-50 transition">
+            Generate Inspection Report →
+          </a>
         </div>
 
-        <!-- Excel upload -->
-        <div class="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5">
-          <h2 class="font-semibold mb-4">Excel Upload</h2>
-          <label id="dropzone"
-            class="flex flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed border-slate-300 dark:border-slate-600 py-8 px-4 text-center cursor-pointer hover:border-sky-400 dark:hover:border-sky-500 transition">
-            <span class="text-2xl">📄</span>
-            <span class="text-sm font-medium">Drop .xlsx file here or click to browse</span>
-            <span class="text-xs text-slate-500 dark:text-slate-400">Columns: Site Name, Inspected By, Pipe Diameter (mm), Inspection Date, Status</span>
-            <input id="file-input" type="file" accept=".xlsx,.xls" class="hidden" />
-          </label>
-          <p id="upload-status" class="text-xs mt-2 hidden"></p>
+        <div class="mt-12 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-xs sm:text-sm font-semibold tracking-wide text-slate-500">
+          <span>EDM MACHINING</span><span class="text-orange-400">|</span>
+          <span>CNC</span><span class="text-orange-400">|</span>
+          <span>VMC</span><span class="text-orange-400">|</span>
+          <span>WELDING TESTING</span><span class="text-orange-400">|</span>
+          <span>MATERIAL TESTING</span><span class="text-orange-400">|</span>
+          <span>QUALITY ASSURANCE</span>
         </div>
       </div>
+    </section>
 
-      <!-- Right: preview + generate -->
-      <div class="lg:col-span-3">
-        <div class="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 h-full flex flex-col">
-          <div class="flex items-center justify-between mb-4">
-            <h2 class="font-semibold">Preview (<span id="preview-count">0</span> records)</h2>
-            <button id="generate-btn" disabled
-              class="rounded-lg bg-emerald-600 disabled:bg-slate-300 dark:disabled:bg-slate-700 disabled:cursor-not-allowed text-white text-sm font-medium px-4 py-2 hover:opacity-90 transition">
-              Generate Report
-            </button>
+    <!-- Services -->
+    <section id="services" class="mx-auto max-w-6xl px-4 sm:px-6 py-20">
+      <div class="text-center max-w-2xl mx-auto mb-14">
+        <h2 class="text-3xl font-extrabold tracking-tight text-slate-900">Our Services</h2>
+        <p class="mt-3 text-slate-600">End-to-end capability across machining, fabrication, and quality verification.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <div class="service-card">
+          <div class="service-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="2" width="6" height="6" rx="1"/>
+              <path d="M10 8 L12 12 L14 8"/>
+              <g stroke="#f97316">
+                <path d="M12 13 L12 16"/>
+                <path d="M12 13 L15 14.5"/>
+                <path d="M12 13 L9 14.5"/>
+                <path d="M12 13 L14.2 16.5"/>
+                <path d="M12 13 L9.8 16.5"/>
+              </g>
+            </svg>
           </div>
+          <h3 class="font-semibold text-slate-900">EDM Machining</h3>
+          <p class="mt-1.5 text-sm text-slate-600">Electrical discharge machining for complex geometries and tight tolerances on hardened metals and precision tooling.</p>
+        </div>
 
-          <div class="overflow-x-auto flex-1">
-            <table class="w-full text-sm">
-              <thead>
-                <tr class="text-left text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700">
-                  <th class="py-2 pr-3">Site Name</th>
-                  <th class="py-2 pr-3">Inspected By</th>
-                  <th class="py-2 pr-3">Diameter (mm)</th>
-                  <th class="py-2 pr-3">Date</th>
-                  <th class="py-2 pr-3">Status</th>
-                  <th class="py-2 pr-3"></th>
-                </tr>
-              </thead>
-              <tbody id="preview-body"></tbody>
-            </table>
-            <p id="preview-empty" class="text-sm text-slate-500 dark:text-slate-400 py-8 text-center">
-              No records yet — add one manually or upload an Excel sheet.
-            </p>
+        <div class="service-card">
+          <div class="service-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 12 L8 12"/>
+              <circle cx="13" cy="12" r="5.5"/>
+              <path d="M13 6.5 L13 9" stroke="#f97316"/>
+              <path d="M17.8 9.2 L15.8 10.8" stroke="#f97316"/>
+              <path d="M17.8 14.8 L15.8 13.2" stroke="#f97316"/>
+              <path d="M8.2 14.8 L10.2 13.2" stroke="#f97316"/>
+              <path d="M8.2 9.2 L10.2 10.8" stroke="#f97316"/>
+              <path d="M13 17.5 L13 15" stroke="#f97316"/>
+            </svg>
+          </div>
+          <h3 class="font-semibold text-slate-900">CNC Machining</h3>
+          <p class="mt-1.5 text-sm text-slate-600">Computer-numerical-control turning and milling for high-precision, repeatable parts across a range of materials.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 4 L5 10 M19 4 L19 10"/>
+              <path d="M5 4 L19 4"/>
+              <path d="M12 4 L12 12"/>
+              <rect x="10" y="12" width="4" height="3" rx="0.5" stroke="#f97316"/>
+              <rect x="6" y="19" width="12" height="2.2" rx="0.5"/>
+            </svg>
+          </div>
+          <h3 class="font-semibold text-slate-900">VMC</h3>
+          <p class="mt-1.5 text-sm text-slate-600">Vertical machining center capability for multi-axis parts requiring tight tolerances and superior surface finish.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 20 L11 13"/>
+              <path d="M11 13 L15 9"/>
+              <rect x="14.2" y="6.5" width="4" height="3.2" rx="0.6" transform="rotate(45 16.2 8.1)"/>
+              <g stroke="#f97316">
+                <path d="M13 14 L16 12.5"/>
+                <path d="M13 14 L14.7 17"/>
+                <path d="M13 14 L11 16.5"/>
+              </g>
+            </svg>
+          </div>
+          <h3 class="font-semibold text-slate-900">Welding Testing</h3>
+          <p class="mt-1.5 text-sm text-slate-600">Destructive and non-destructive weld inspection to verify joint integrity against industry codes and standards.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2.5 12 L6 12"/>
+              <path d="M2.5 12 L4.8 10.2 M2.5 12 L4.8 13.8"/>
+              <path d="M6 9.8 C9 9.8 9 14.2 6 14.2"/>
+              <path d="M18 9.8 C15 9.8 15 14.2 18 14.2"/>
+              <path d="M9 10.4 L15 10.4 M9 13.6 L15 13.6"/>
+              <path d="M21.5 12 L18 12"/>
+              <path d="M21.5 12 L19.2 10.2 M21.5 12 L19.2 13.8"/>
+            </svg>
+          </div>
+          <h3 class="font-semibold text-slate-900">Material Testing</h3>
+          <p class="mt-1.5 text-sm text-slate-600">Mechanical and metallurgical testing — tensile, hardness, and impact — to verify material properties against spec.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3 L19 6 V11 C19 15.5 16 18.5 12 20 C8 18.5 5 15.5 5 11 V6 Z"/>
+              <path d="M9 11.5 L11 13.5 L15.5 9" stroke="#f97316"/>
+            </svg>
+          </div>
+          <h3 class="font-semibold text-slate-900">Quality Assurance</h3>
+          <p class="mt-1.5 text-sm text-slate-600">End-to-end QA/QC inspection and documentation ensuring components meet dimensional and regulatory standards.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="bg-slate-50 border-y border-slate-200">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 py-20">
+        <div class="text-center max-w-2xl mx-auto mb-14">
+          <h2 class="text-3xl font-extrabold tracking-tight text-slate-900">Why Sparktech</h2>
+          <p class="mt-3 text-slate-600">Built on precision, verified by rigorous testing.</p>
+        </div>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+          <div>
+            <div class="text-3xl font-extrabold text-orange-500">±μm</div>
+            <p class="mt-2 text-sm font-medium text-slate-700">Tight-tolerance precision machining</p>
+          </div>
+          <div>
+            <div class="text-3xl font-extrabold text-orange-500">QA</div>
+            <p class="mt-2 text-sm font-medium text-slate-700">Documented quality assurance on every job</p>
+          </div>
+          <div>
+            <div class="text-3xl font-extrabold text-orange-500">24/7</div>
+            <p class="mt-2 text-sm font-medium text-slate-700">Responsive turnaround for urgent work</p>
+          </div>
+          <div>
+            <div class="text-3xl font-extrabold text-orange-500">100%</div>
+            <p class="mt-2 text-sm font-medium text-slate-700">Inspection-backed, traceable results</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- HISTORY VIEW -->
-    <section id="view-history" class="hidden">
-      <div class="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5">
-        <h2 class="font-semibold mb-4">Report History</h2>
-        <div class="overflow-x-auto">
-          <table class="w-full text-sm">
-            <thead>
-              <tr class="text-left text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700">
-                <th class="py-2 pr-3">Generated</th>
-                <th class="py-2 pr-3">Site Name</th>
-                <th class="py-2 pr-3">Inspected By</th>
-                <th class="py-2 pr-3">Records</th>
-                <th class="py-2 pr-3"></th>
-              </tr>
-            </thead>
-            <tbody id="history-body"></tbody>
-          </table>
-          <p id="history-empty" class="text-sm text-slate-500 dark:text-slate-400 py-8 text-center">
-            No reports generated yet.
-          </p>
-        </div>
+    <!-- Contact -->
+    <section id="contact" class="mx-auto max-w-6xl px-4 sm:px-6 py-20">
+      <div class="rounded-2xl bg-slate-900 px-8 py-14 text-center">
+        <h2 class="text-3xl font-extrabold tracking-tight text-white">Get in Touch</h2>
+        <p class="mt-3 text-slate-300 max-w-xl mx-auto">
+          Have a project that needs precision machining or testing? Reach out and our team will get back to you.
+        </p>
+        <a href="mailto:operations@sparktech-ksa.com"
+          class="mt-8 inline-block rounded-lg bg-orange-500 text-white text-sm font-semibold px-6 py-3 hover:bg-orange-600 transition">
+          operations@sparktech-ksa.com
+        </a>
       </div>
     </section>
+
   </main>
 
-  <div id="toast" class="fixed bottom-5 right-5 hidden max-w-xs rounded-lg bg-slate-900 text-white text-sm px-4 py-3 shadow-lg"></div>
+  <!-- Footer -->
+  <footer class="border-t border-slate-200">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <img src="logo.png" alt="Sparktech logo" class="h-7 w-7" />
+        <span class="text-sm font-semibold text-slate-700">Sparktech Industrial Services</span>
+      </div>
+      <p class="text-xs text-slate-500">&copy; 2026 Sparktech Industrial Services. All rights reserved.</p>
+      <a href="generate-report/" class="text-xs font-medium text-slate-600 hover:text-slate-900 transition">Inspection Report Tool →</a>
+    </div>
+  </footer>
 
-  <script src="app.js" defer></script>
 </body>
 </html>

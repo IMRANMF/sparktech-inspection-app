@@ -1,0 +1,32 @@
+.hero-gradient {
+  background:
+    radial-gradient(circle at 15% 20%, rgba(249, 115, 22, 0.08), transparent 40%),
+    radial-gradient(circle at 85% 15%, rgba(15, 23, 42, 0.06), transparent 45%),
+    linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+}
+
+.service-card {
+  border: 1px solid rgb(226 232 240);
+  border-radius: 1rem;
+  padding: 1.75rem;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.service-card:hover {
+  box-shadow: 0 8px 24px -8px rgba(15, 23, 42, 0.12);
+  border-color: rgb(203 213 225);
+}
+
+.service-badge {
+  width: 56px;
+  height: 56px;
+  border-radius: 0.85rem;
+  background: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.1rem;
+}
+.service-badge svg {
+  width: 28px;
+  height: 28px;
+}
